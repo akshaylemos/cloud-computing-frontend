@@ -85,13 +85,27 @@ export class TodoComponent implements OnInit {
     { data: [], label: 'Todos Started' },
     { data: [], label: 'Todos Done' },
   ];
+  userDataReady = false;
+  dataURL: string;
 
   constructor(private backendService: BackendService, private datePipe: DatePipe, private cookieService: CookieService) { }
 
   ngOnInit() {
     this.updateTodo();
-  }
 
+    if (this.removeDataUser) {
+      this.backendService.dataReady().then(
+        (dataURL: string) => {
+          this.dataURL = dataURL;
+          if (this.dataURL) {
+            this.userDataReady = true;
+          } else {
+            this.userDataReady = false;
+          }
+        }
+      );
+    }
+  }
 
   newTodo() {
     this.showNewTodoInput = true;
@@ -145,4 +159,10 @@ export class TodoComponent implements OnInit {
   get removeDataUser(): boolean {
     return this.cookieService.get('removeUser') === 'true';
   }
+
+  userDataReadyWait(): boolean {
+    return this.backendService.dataReady().
+  }
+
+  get dataReady
 }

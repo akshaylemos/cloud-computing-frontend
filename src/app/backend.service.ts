@@ -130,8 +130,7 @@ export class BackendService {
 
 
   dataReady(): Promise<string> {
-    //TODO: Figure out why this is giving out an eror.
-    return this.http.post(DATA_READY_WORK, {
+    return this.http.post<string>(DATA_READY_WORK, {
       userName: this.cookieService.get('userName')
     }).toPromise();
   }
