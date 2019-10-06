@@ -2,9 +2,8 @@ import { Component, OnInit } from '@angular/core';
 import { TodosResponse } from '../types';
 import { BackendService } from '../backend.service';
 import { DatePipe } from '@angular/common';
-import { Moment } from 'moment';
-import * as moment from 'moment';
 import { ChartOptions } from 'chart.js';
+import { CookieService } from 'ngx-cookie-service';
 
 declare var gapi: any;
 
@@ -86,26 +85,10 @@ export class TodoComponent implements OnInit {
     { data: [], label: 'Todos Started' },
     { data: [], label: 'Todos Done' },
   ];
-  apiLoaded = false;
-  apiFailed = true;
-  apiReady = false;
 
-  constructor(private backendService: BackendService, private datePipe: DatePipe) { }
+  constructor(private backendService: BackendService, private datePipe: DatePipe, private cookieService: CookieService) { }
 
   ngOnInit() {
-    // this.backendService.loadClient().then(
-    //   result => {
-    //     this.apiLoaded = true;
-    //     return this.backendService.initClient();
-    //   },
-    //   err => {
-    //     this.apiFailed = true;
-    //   }
-    // ).then(result => {
-    //   this.apiReady = true;
-    // }, err => {
-    //   this.apiFailed = true;
-    // });
     this.updateTodo();
   }
 
@@ -156,11 +139,10 @@ export class TodoComponent implements OnInit {
   }
 
   takeOutData() {
-    // this.backendService.pubSubDataReady().then(
-    //   (data) => {
-    //     debugger;
-    //   }
-    // );
-    this.backendService.dataReady();
+    this.backendService.removeData();
+  }
+
+  get removeDataUser(): boolean {
+    return this.cookieService.get('removeUser') === 'true';
   }
 }

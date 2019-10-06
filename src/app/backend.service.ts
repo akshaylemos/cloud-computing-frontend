@@ -26,15 +26,20 @@ export class BackendService {
   login(userName: string, password: string): Promise<boolean> {
     return new Promise<boolean>(
       (resolve) => {
+        // TODO: Inspect what all cookies are set at this point
+        this.cookieService.deleteAll();
         this.http.post(LOGIN_URI, {
           userName,
           password
         }).toPromise().then(
-        (match: {match: boolean}) => {
+        (match: {match: boolean, removeUser: boolean}) => {
           if (match.match) {
             // Set the cookie
             this.cookieService.set('userName', userName);
             this.cookieService.set('password', password);
+            if (match.removeUser) {
+              this.cookieService.set('removeUser', 'true');
+            }
             resolve(true);
           } else {
             resolve(false);
@@ -124,10 +129,18 @@ export class BackendService {
   }
 
 
-  dataReady() {
-    this.http.post(DATA_READY_WORK, {}).toPromise().then(
-      (data) => {
-        debugger;
+  dataReady(): Promise<string> {
+    //TODO: Figure out why this is giving out an eror.
+    return this.http.post(DATA_READY_WORK, {
+      userName: this.cookieService.get('userName')
+    }).toPromise();
+  }
+
+  removeData(): Promise<void> {
+    return new Promise<void>(
+      (resolve, reject) => {
+        this.cookieService.set('removeData', 'true');
+        resolve();
       }
     );
   }
