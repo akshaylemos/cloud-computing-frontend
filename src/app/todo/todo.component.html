@@ -1,0 +1,49 @@
+<div style="padding: 30px">
+
+<div style="display: flex; justify-content: flex-end;">
+  <button *ngIf="!showNewTodoInput" mat-raised-button color="primary" mat-stroked-button (click)="newTodo()">Create a new Todo</button>
+  <div style="width: 20px"></div>
+  <button mat-stroked-button (click)="takeOutData()" mat-raised-button color="primary">Take Out Data</button>
+</div>
+<div *ngIf="showDataOutProcessing">
+  <div>We are preparing an archive of your data, please wait while we process your data.</div>
+</div>
+<div *ngIf="showNewTodoInput">
+    <mat-form-field class="example-full-width">
+      <input matInput placeholder="What you want to get done?" [(ngModel)]="newTodoText">
+    </mat-form-field>
+  <button mat-stroked-button (click)="addTodo()" mat-raised-button color="primary">Add Todo</button>
+</div>
+<div>
+  <div style="display: block; width: 400px; height: 200px">
+    <canvas baseChart [datasets]="barChartData" [labels]="barChartLabels" [options]="barChartOptions"
+      [legend]="barChartLegend" [chartType]="barChartType">
+    </canvas>
+  </div>
+</div>
+<div>
+  <mat-list *ngFor="let todo of todos; let i = index">
+    <mat-list-item>
+      <div style="display: flex; align-items: center;">
+        <div style="width: 40px">
+          <div *ngIf="(todo.end && todo.start)">
+            ☑️
+          </div>
+        </div>
+        <div style="margin-right: 20px">
+          {{todo.text}}
+        </div>
+        <div>
+          <button *ngIf="!todo.start" mat-raised-button class="intermediate-button" (click)="startTodo(todo.id)">Mark started</button>
+        </div>
+        <div>
+          <button *ngIf="!todo.end && todo.start" mat-raised-button class="success-button" (click)="endTodo(todo.id)">Mark as Done</button>
+        </div>
+        <div *ngIf="(todo.end && todo.start)">
+          {{todo.timeTakenStr}}
+        </div>
+      </div>
+    </mat-list-item>
+  </mat-list>
+</div>
+</div>
