@@ -3,13 +3,15 @@
     <button *ngIf="!showNewTodoInput" mat-raised-button color="primary" mat-stroked-button (click)="newTodo()">Create a
       new Todo</button>
     <div style="width: 20px"></div>
-    <button mat-stroked-button (click)="takeOutData()" mat-raised-button color="primary">Take Out Data</button>
+    <button mat-stroked-button *ngIf="!removeDataUser" (click)="takeOutData()" mat-raised-button color="primary">Take Out
+      Data</button>
+    <div style="width: 20px"></div>
+    <button mat-stroked-button (click)="logout()" mat-raised-button color="primary">Logout</button>
   </div>
   <div *ngIf="removeDataUser">
-    <div *ngIf="userDataReady">We are preparing an archive of your data, please wait while we process your data.</div>
-    <div>
-      Download the file from
-      <a [href]="dataURL"></a>
+    <div *ngIf="!userDataReady">We are preparing an archive of your data, please wait while we process your data.</div>
+    <div *ngIf="userDataReady">
+      <a [href]="dataURL" download (click)="downloadAndDeleteAccount($event)">Download data, and delete account</a>
     </div>
   </div>
   <div *ngIf="showNewTodoInput">

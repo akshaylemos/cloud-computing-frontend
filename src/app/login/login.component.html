@@ -1,9 +1,45 @@
-<input type="text" placeholder="User name" [(ngModel)]="userName">
+<div class="outermost-div">
+  <div style="margin-bottom: 20px">
+    <div *ngIf="loginMode" style="display: flex">
+      <button mat-raised-button (click)="loginMode = false; registerMode = true;">Sign Up?</button>
+    </div>
+    <div *ngIf="registerMode">
+      <button mat-raised-button (click)="loginMode = true; registerMode = false;">Have an account, login?</button>
+    </div>
+  </div>
 
-<input type="password" placeholder="Password" [(ngModel)]="password">
+  <div *ngIf="loginMode">
+    <div style="display: flex">
+      <mat-form-field class="example-full-width">
+        <input type="text" matInput placeholder="User name" [(ngModel)]="userName">
+      </mat-form-field>
+      <mat-form-field class="example-full-width">
+        <input type="password" matInput placeholder="Password" [(ngModel)]="password">
+      </mat-form-field>
+    </div>
+    <button mat-raised-button color="primary" (click)="login()">Login</button>
+    <div>
+      {{error}}
+    </div>
 
-<button (click)="login()">Login</button>
+  </div>
 
-<div>
-  {{error}}
+  <div *ngIf="registerMode">
+    <div>
+      <mat-form-field class="example-full-width">
+        <input type="text" matInput placeholder="User name" [(ngModel)]="userName">
+      </mat-form-field>
+      <mat-form-field class="example-full-width">
+        <input type="password" matInput placeholder="Password" [(ngModel)]="password">
+      </mat-form-field>
+    </div>
+    <button mat-raised-button color="primary" (click)="register()">Register</button>
+    <div>
+      {{error}}
+    </div>
+  </div>
+
+  <div *ngIf="numberOfUsers" style="margin-top: 20px">
+    {{numberOfUsers}} todos so far.
+  </div>
 </div>

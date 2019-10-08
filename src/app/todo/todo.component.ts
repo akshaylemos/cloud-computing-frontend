@@ -4,9 +4,7 @@ import { BackendService } from '../backend.service';
 import { DatePipe } from '@angular/common';
 import { ChartOptions } from 'chart.js';
 import { CookieService } from 'ngx-cookie-service';
-
-declare var gapi: any;
-
+import { Router } from '@angular/router';
 
 export class Todo implements TodosResponse {
 
@@ -88,15 +86,17 @@ export class TodoComponent implements OnInit {
   userDataReady = false;
   dataURL: string;
 
-  constructor(private backendService: BackendService, private datePipe: DatePipe, private cookieService: CookieService) { }
+  constructor(private backendService: BackendService, private datePipe: DatePipe,
+              private cookieService: CookieService, private router: Router) { }
 
   ngOnInit() {
     this.updateTodo();
-
     if (this.removeDataUser) {
       this.backendService.dataReady().then(
-        (dataURL: string) => {
-          this.dataURL = dataURL;
+        (dataURL: {
+          url: string
+        }) => {
+          this.dataURL = dataURL.url;
           if (this.dataURL) {
             this.userDataReady = true;
           } else {
@@ -136,6 +136,7 @@ export class TodoComponent implements OnInit {
       }
     );
   }
+
   updateTodo() {
     this.backendService.todos().then(
       (todosResponse) => {
@@ -157,12 +158,19 @@ export class TodoComponent implements OnInit {
   }
 
   get removeDataUser(): boolean {
-    return this.cookieService.get('removeUser') === 'true';
+    return this.cookieService.get('removeData') === 'true';
   }
 
-  userDataReadyWait(): boolean {
-    return this.backendService.dataReady().
+  downloadAndDeleteAccount(event) {
+    this.backendService.deleteUser().then(
+      (_) => {
+        this.logout();
+      }
+    );
   }
 
-  get dataReady
+  logout() {
+    this.backendService.logout();
+    this.router.navigate(['/']);
+  }
 }

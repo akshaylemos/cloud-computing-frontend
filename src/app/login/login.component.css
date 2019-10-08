@@ -1,0 +1,9 @@
+.outermost-div {
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
+  text-align: center;
+  align-content: center;
+  align-items: center;
+  height: 100%;
+}
