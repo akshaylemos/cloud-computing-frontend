@@ -3,7 +3,7 @@ import { HttpClient } from '@angular/common/http';
 import { CookieService } from 'ngx-cookie-service';
 import { TodosResponse } from './types';
 
-const BACKEND_URI = 'http://localhost:5000';
+const BACKEND_URI = window.location.origin + '/backend';
 const LOGIN_URI = `${BACKEND_URI}/login`;
 const TODOS_URI = `${BACKEND_URI}/todos`;
 const USER_DATA_OUT_URI = `${BACKEND_URI}/data-out`;
