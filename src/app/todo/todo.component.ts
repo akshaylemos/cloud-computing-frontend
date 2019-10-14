@@ -150,15 +150,15 @@ export class TodoComponent implements OnInit {
         const graphDataDone = new Array(7).fill(0);
         const graphDataStarted = new Array(7).fill(0);
         this.todos.forEach((todo) => {
-          if (todo.endDate) {
+          if (todo.endDate != null) {
             graphDataStarted[todo.endDate.getDay()]++;
           }
-          if (todo.startDate) {
+          if (todo.startDate != null) {
             graphDataDone[todo.startDate.getDay()]++;
           }
         });
-        this.barChartData[1].data = graphDataDone;
-        this.barChartData[0].data = graphDataStarted;
+        this.barChartData[0].data = graphDataDone;
+        this.barChartData[1].data = graphDataStarted;
       }
     );
   }
