@@ -23,10 +23,16 @@ export class Todo implements TodosResponse {
   }
 
   get startDate(): Date {
+    if (this.todoResponse.start == null) {
+      return null;
+    }
     return new Date(this.todoResponse.start);
   }
 
   get endDate(): Date {
+    if (this.todoResponse.end == null) {
+      return null;
+    }
     return new Date(this.todoResponse.end);
   }
 
@@ -144,8 +150,12 @@ export class TodoComponent implements OnInit {
         const graphDataDone = new Array(7).fill(0);
         const graphDataStarted = new Array(7).fill(0);
         this.todos.forEach((todo) => {
-          graphDataDone[todo.startDate.getDay()]++;
-          graphDataStarted[todo.endDate.getDay()]++;
+          if (todo.endDate) {
+            graphDataStarted[todo.endDate.getDay()]++;
+          }
+          if (todo.startDate) {
+            graphDataDone[todo.startDate.getDay()]++;
+          }
         });
         this.barChartData[1].data = graphDataDone;
         this.barChartData[0].data = graphDataStarted;
